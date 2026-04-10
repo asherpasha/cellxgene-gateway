@@ -26,7 +26,7 @@ source .cellxgene-gateway/bin/activate # type `deactivate` to deactivate the ven
 ### Option 1: Pip Install from Github
 
 ```bash
-pip install git+https://github.com/Novartis/cellxgene-gateway
+pip install git+https://github.com/asherpasha/cellxgene-gateway@bar
 ```
 Note: you may need to downgrade h5py with `pip install h5py==2.9.0` due to an [issue](https://github.com/theislab/scanpy/issues/832) in a dependency.
 ### Option 2: Install from PyPI
