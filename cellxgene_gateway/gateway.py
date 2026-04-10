@@ -228,7 +228,7 @@ def index():
 
     resp = make_response(
         render_template(
-            "filecrawl.html",
+            "index.html",
             extra_scripts=get_extra_scripts(),
             rendered_html=rendered_html,
             path=None,
