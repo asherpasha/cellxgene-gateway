@@ -222,7 +222,7 @@ def index():
     )
     # loop all data sources --
     rendered_sources = [
-        render_item_source(item_source, path) for item_source in sources
+        render_item_source(item_source, None) for item_source in sources
     ]  # will we need to make this async in the page???
     rendered_html = "\n".join(rendered_sources)
 
@@ -231,7 +231,7 @@ def index():
             "filecrawl.html",
             extra_scripts=get_extra_scripts(),
             rendered_html=rendered_html,
-            path=path,
+            path=None,
         )
     )
     set_no_cache(resp)
