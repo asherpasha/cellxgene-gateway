@@ -211,12 +211,31 @@ def favicon():
 
 @app.route("/")
 def index():
-    return render_template(
-        "index.html",
-        ip=env.ip,
-        cellxgene_data=env.cellxgene_data,
-        extra_scripts=get_extra_scripts(),
+    source_name = request.args.get("source")
+    sources = (
+        filter(
+            lambda x: x.name == urllib.parse.unquote_plus(source_name),
+            item_sources,
+        )
+        if source_name
+        else item_sources
     )
+    # loop all data sources --
+    rendered_sources = [
+        render_item_source(item_source, path) for item_source in sources
+    ]  # will we need to make this async in the page???
+    rendered_html = "\n".join(rendered_sources)
+
+    resp = make_response(
+        render_template(
+            "filecrawl.html",
+            extra_scripts=get_extra_scripts(),
+            rendered_html=rendered_html,
+            path=path,
+        )
+    )
+    set_no_cache(resp)
+    return resp
 
 
 @app.route("/filecrawl.html")
