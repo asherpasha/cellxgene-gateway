@@ -135,9 +135,7 @@ class TestRenderItemTree(unittest.TestCase):
     def test_GIVEN_deep_nested_dirs_THEN_includes_dirs_in_output(self, item_source):
         item_source.name = "FakeSource"
         item_source.get_annotations_subpath = lambda _: "FakeAnnotations"
-        file_item = FileItem(
-            subpath="foo/bar/baz", name="file.h5ad", type=ItemType.h5ad
-        )
+        file_item = FileItem(subpath="foo/bar/baz", name="file.h5ad", type=ItemType.h5ad)
         item_tree = ItemTree("foo/bar/baz", [file_item], [])
         rendered = render_item_tree(item_tree, item_source)
         self.assertEqual(
@@ -149,14 +147,10 @@ class TestRenderItemTree(unittest.TestCase):
 
     @patch(
         "os.listdir",
-        side_effect=lambda parent: defaultdict(
-            list, {"tmp": ["foo"], "tmp/foo": ["bar"]}
-        )[parent],
+        side_effect=lambda parent: defaultdict(list, {"tmp": ["foo"], "tmp/foo": ["bar"]})[parent],
     )
     @patch("os.path.exists", return_value=True)
-    def test_GIVEN_dirs_without_h5ad_THEN_excludes_dirs_in_output(
-        self, listdir, exists
-    ):
+    def test_GIVEN_dirs_without_h5ad_THEN_excludes_dirs_in_output(self, listdir, exists):
         # Directories:
         # - tmp
         #   - foo

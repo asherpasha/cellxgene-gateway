@@ -39,12 +39,7 @@ class SubprocessBackend:
         if not cellxgene_args is None:
             extra_args += f" {cellxgene_args}"
 
-        cmd = (
-            f"yes | {cellxgene_loc} launch {file_path}"
-            + f" --port {port}"
-            + " --host 127.0.0.1"
-            + extra_args
-        )
+        cmd = f"yes | {cellxgene_loc} launch {file_path}" + f" --port {port}" + " --host 127.0.0.1" + extra_args
 
         for s in scripts:
             cmd += f" --scripts {s}"
@@ -60,9 +55,7 @@ class SubprocessBackend:
             cache_entry.key.annotation_file_path,
         )
         logger.info(f"launching {cmd}")
-        process = subprocess.Popen(
-            [cmd], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True
-        )
+        process = subprocess.Popen([cmd], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
         while True:
             output = process.stdout.readline().decode()
@@ -70,10 +63,7 @@ class SubprocessBackend:
                 break
             elif output == "":
                 stderr = process.stderr.read().decode()
-                if (
-                    "Error while loading file" in stderr
-                    or "Could not open file" in stderr
-                ):
+                if "Error while loading file" in stderr or "Could not open file" in stderr:
                     message = "File was invalid."
                     http_status = HTTPStatus.BAD_REQUEST
                 else:

@@ -29,9 +29,7 @@ class PruneProcessCache:
         timestamp = util.current_time_stamp()
         cutoff = timestamp - self.expire_seconds
         processes_to_delete = [p for p in self.cache.entry_list if p.timestamp < cutoff]
-        processes_to_keep = [
-            p for p in self.cache.entry_list if not p.timestamp < cutoff
-        ]
+        processes_to_keep = [p for p in self.cache.entry_list if not p.timestamp < cutoff]
 
         logger.debug(
             f"Cutoff {cutoff} = timestamp {timestamp} - expire seconds {self.expire_seconds} , keeping {processes_to_keep}, pruning {processes_to_delete}"
@@ -42,6 +40,4 @@ class PruneProcessCache:
                 logger.info(f"pruning process {process.pid} ({process.key.descriptor})")
                 self.cache.prune(process)
             except Exception:
-                logger.exception(
-                    "failed to prune process {process.pid} ({process.key.descriptor})"
-                )
+                logger.exception("failed to prune process {process.pid} ({process.key.descriptor})")

@@ -30,9 +30,7 @@ class TestFileItemSource(unittest.TestCase):
         self,
     ):
         source = FileItemSource(tempfile.gettempdir(), "local")
-        item = source.make_fileitem_from_path(
-            "customanno.csv", "someh5ad_annotations", True
-        )
+        item = source.make_fileitem_from_path("customanno.csv", "someh5ad_annotations", True)
         self.assertEqual(item.name, "customanno")
         self.assertEqual(item.descriptor, "someh5ad_annotations/customanno.csv")
 

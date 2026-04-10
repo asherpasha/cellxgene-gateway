@@ -67,9 +67,7 @@ class CacheKey:
             and (self.annotation_descriptor == other.annotation_descriptor)
         )
 
-    def __init__(
-        self, h5ad_item: Item, source: ItemSource, annotation_item: Item = None
-    ):
+    def __init__(self, h5ad_item: Item, source: ItemSource, annotation_item: Item = None):
         assert h5ad_item is not None
         assert source is not None
         self.h5ad_item = h5ad_item

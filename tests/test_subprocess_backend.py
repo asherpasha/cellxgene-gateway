@@ -43,18 +43,14 @@ class TestSubprocessBackend(unittest.TestCase):
     @patch("subprocess.Popen")
     def test_launch_GIVEN_annotations_enabled_THEN_set_flags(self, popen):
         subprocess = MagicMock()
-        subprocess.stdout.readline().decode.return_value = (
-            "[cellxgene] Type CTRL-C at any time to exit.\n"
-        )
+        subprocess.stdout.readline().decode.return_value = "[cellxgene] Type CTRL-C at any time to exit.\n"
         subprocess.stderr.read().decode.return_value = ""
         popen.return_value = subprocess
 
         key = CacheKey(
             FileItem("/czi/", name="pbmc3k.h5ad", type=ItemType.h5ad),
             FileItemSource("/tmp", "local"),
-            FileItem(
-                "/czi/pbmc3k_annotations/", name="foo.csv", type=ItemType.annotation
-            ),
+            FileItem("/czi/pbmc3k_annotations/", name="foo.csv", type=ItemType.annotation),
         )
         entry = CacheEntry.for_key(key, 8000)
         import cellxgene_gateway.subprocess_backend

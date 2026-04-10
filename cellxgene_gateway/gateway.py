@@ -93,18 +93,14 @@ def _init_on_first_wsgi_request(wsgi_app):
         if not data_sources_initialized:
             with data_sources_init_lock:
                 if not app.extensions.get("cellxgene_gateway", {}).get("launchtime"):
-                    app.extensions.setdefault("cellxgene_gateway", {})[
-                        "launchtime"
-                    ] = current_time_stamp()
+                    app.extensions.setdefault("cellxgene_gateway", {})["launchtime"] = current_time_stamp()
 
                 if not data_sources_initialized:
                     initialize_data_sources()
 
                     env.validate()
                     if not item_sources or not len(item_sources):
-                        raise Exception(
-                            "No data sources specified for Cellxgene Gateway"
-                        )
+                        raise Exception("No data sources specified for Cellxgene Gateway")
 
                     global default_item_source
                     if default_item_source is None:
@@ -242,7 +238,9 @@ def index():
 def filecrawl(path=None):
     return render_template("filecrawl.html")
 
+
 entry_lock = Lock()
+
 
 def matching_source(source_name):
     if source_name is None and default_item_source is not None:
@@ -282,10 +280,7 @@ def do_view(path, source_name=None):
 
     match.timestamp = current_time_stamp()
 
-    if (
-        match.status == CacheEntryStatus.loaded
-        or match.status == CacheEntryStatus.loading
-    ):
+    if match.status == CacheEntryStatus.loaded or match.status == CacheEntryStatus.loading:
         if source.is_authorized(match.key.descriptor):
             return match.serve_content(path)
         else:
@@ -355,9 +350,7 @@ def start_pruner_thread():
 def launch():
     start_pruner_thread()
 
-    app.extensions.setdefault("cellxgene_gateway", {})[
-        "launchtime"
-    ] = current_time_stamp()
+    app.extensions.setdefault("cellxgene_gateway", {})["launchtime"] = current_time_stamp()
     app.run(host="0.0.0.0", port=env.gateway_port, debug=False)
 
 

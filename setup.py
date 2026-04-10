@@ -56,14 +56,16 @@ setup(
             "static/css/*.css",
             "static/js/annotation.js",
             "static/images/*.svg",
+            "static/assets/*",
+            "static/*.js",
+            "static/*.css",
+            "static/*.*.map",
             "templates/*.html",
         ]
     },
     data_files=[("", ["README.md", "LICENSE"])],
     install_requires=install_reqs,
-    entry_points={
-        "console_scripts": ["cellxgene-gateway=cellxgene_gateway.gateway:main"]
-    },
+    entry_points={"console_scripts": ["cellxgene-gateway=cellxgene_gateway.gateway:main"]},
     classifiers=["Topic :: Scientific/Engineering :: Visualization"],
     python_requires=">=3.6",
 )

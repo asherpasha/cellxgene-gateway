@@ -34,9 +34,7 @@ class TestRenderEntry(unittest.TestCase):
 
     def test_GIVEN_absolute_static_url_THEN_include_path(self):
         flask_util.include_source_in_url = False
-        actual = CacheEntry.for_key(key, 8000).rewrite_text_content(
-            "src:url(/static/assets/"
-        )
+        actual = CacheEntry.for_key(key, 8000).rewrite_text_content("src:url(/static/assets/")
         expected = "src:url(/view/czi/pbmc3k.h5ad/static/assets/"
         self.assertEqual(actual, expected)
 
@@ -50,9 +48,7 @@ class TestRenderEntry(unittest.TestCase):
 
     def test_GIVEN_absolute_static_url_include_source_THEN_include_path(self):
         flask_util.include_source_in_url = True
-        actual = CacheEntry.for_key(key, 8000).rewrite_text_content(
-            "src:url(/static/assets/"
-        )
+        actual = CacheEntry.for_key(key, 8000).rewrite_text_content("src:url(/static/assets/")
         expected = "src:url(/source/local/view/czi/pbmc3k.h5ad/static/assets/"
         self.assertEqual(actual, expected)
 

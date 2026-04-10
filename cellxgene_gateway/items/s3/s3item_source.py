@@ -39,9 +39,7 @@ class S3ItemSource(ItemSource):
         self.use_listings_cache = truthy(enable_cache)
         self.s3 = s3fs.S3FileSystem(use_listings_cache=self.use_listings_cache)
         if bucket.startswith("s3://"):
-            raise Exception(
-                f"Bucket name should not include s3:// prefix, got {bucket}"
-            )
+            raise Exception(f"Bucket name should not include s3:// prefix, got {bucket}")
         self.bucket = bucket
         self.h5ad_suffix = h5ad_suffix
         self.annotation_dir_suffix = annotation_dir_suffix
@@ -78,10 +76,7 @@ class S3ItemSource(ItemSource):
 
     @property
     def refresh(self):
-        return (
-            truthy(flask.request.args.get("refresh", default="false"))
-            or not self.use_listings_cache
-        )
+        return truthy(flask.request.args.get("refresh", default="false")) or not self.use_listings_cache
 
     def scan_directory(self, directory_key="") -> dict:
         url = self.url(directory_key)
@@ -100,11 +95,7 @@ class S3ItemSource(ItemSource):
                 and self.convert_annotation_key_to_h5ad(dir_s3key) in h5ad_keys
             )
 
-        h5ad_keys = [
-            filepath
-            for filepath, item_url in s3key_map.items()
-            if self.is_h5ad_url(item_url)
-        ]
+        h5ad_keys = [filepath for filepath, item_url in s3key_map.items() if self.is_h5ad_url(item_url)]
 
         subdir_keys = [
             filepath
@@ -116,16 +107,12 @@ class S3ItemSource(ItemSource):
         branches = None
         if len(subdir_keys) > 0:
             branches = [self.scan_directory(key) for key in subdir_keys]
-            branches = [
-                branch for branch in branches if branch.items or branch.branches
-            ]
+            branches = [branch for branch in branches if branch.items or branch.branches]
 
         return ItemTree(directory_key, items, branches)
 
     def create_annotation(self, item: S3Item, name: str) -> S3Item:
-        annotation = self.make_s3item_from_key(
-            name, self.get_annotations_subpath(item), is_annotation=True
-        )
+        annotation = self.make_s3item_from_key(name, self.get_annotations_subpath(item), is_annotation=True)
         item.annotations = (item.annotations or []).append(annotation)
         return annotation
 
@@ -147,9 +134,7 @@ class S3ItemSource(ItemSource):
             if not self.s3.exists(self.url(annotation_item.s3key)):
                 with self.s3.open(self.url(annotation_item.s3key), "w") as f:
                     f.write("")
-            h5ad_descriptor = self.convert_annotation_key_to_h5ad(
-                dirname(annotation_item.s3key)
-            )
+            h5ad_descriptor = self.convert_annotation_key_to_h5ad(dirname(annotation_item.s3key))
             item = self.shallowitem_from_descriptor(h5ad_descriptor)
             return LookupResult(item, annotation_item)
         else:
@@ -158,13 +143,9 @@ class S3ItemSource(ItemSource):
                 return LookupResult(item)
 
     def shallowitem_from_descriptor(self, descriptor, is_annotation=False):
-        return self.make_s3item_from_key(
-            basename(descriptor), descriptor, is_annotation, True
-        )
+        return self.make_s3item_from_key(basename(descriptor), descriptor, is_annotation, True)
 
-    def make_s3item_from_key(
-        self, name, s3key, is_annotation=False, is_shallow=False
-    ) -> S3Item:
+    def make_s3item_from_key(self, name, s3key, is_annotation=False, is_shallow=False) -> S3Item:
         item = S3Item(
             s3key=s3key,
             name=name,
@@ -182,14 +163,9 @@ class S3ItemSource(ItemSource):
         annotations_fullpath = self.url(annotations_subpath)
         if self.s3.isdir(annotations_fullpath):
             return [
-                self.make_s3item_from_key(
-                    basename(annotation), self.remove_bucket(annotation), True
-                )
-                for annotation in sorted(
-                    self.s3.ls(annotations_fullpath, refresh=self.refresh)
-                )
-                if annotation.endswith(self.annotation_file_suffix)
-                and self.s3.isfile("s3://" + annotation)
+                self.make_s3item_from_key(basename(annotation), self.remove_bucket(annotation), True)
+                for annotation in sorted(self.s3.ls(annotations_fullpath, refresh=self.refresh))
+                if annotation.endswith(self.annotation_file_suffix) and self.s3.isfile("s3://" + annotation)
             ]
         else:
             return None

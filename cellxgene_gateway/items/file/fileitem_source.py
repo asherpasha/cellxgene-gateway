@@ -74,22 +74,12 @@ class FileItemSource(ItemSource):
         if not os.path.exists(base_path):
             raise Exception(f"Path for local files '{base_path}' does not exist.")
 
-        filepath_map = dict(
-            (filepath, os.path.join(base_path, filepath))
-            for filepath in sorted(os.listdir(base_path))
-        )
+        filepath_map = dict((filepath, os.path.join(base_path, filepath)) for filepath in sorted(os.listdir(base_path)))
 
         def is_annotation_dir(dir):
-            return (
-                dir.endswith(self.annotation_dir_suffix)
-                and self.convert_annotation_path_to_h5ad(dir) in h5ad_paths
-            )
+            return dir.endswith(self.annotation_dir_suffix) and self.convert_annotation_path_to_h5ad(dir) in h5ad_paths
 
-        h5ad_paths = [
-            filepath
-            for filepath, full_path in filepath_map.items()
-            if self.is_h5ad_file(full_path)
-        ]
+        h5ad_paths = [filepath for filepath, full_path in filepath_map.items() if self.is_h5ad_file(full_path)]
 
         subdirs = [
             filepath
@@ -97,26 +87,18 @@ class FileItemSource(ItemSource):
             if os.path.isdir(full_path) and not is_annotation_dir(filepath)
         ]
 
-        items = [
-            self.make_fileitem_from_path(filename, subpath) for filename in h5ad_paths
-        ]
+        items = [self.make_fileitem_from_path(filename, subpath) for filename in h5ad_paths]
         branches = None
         if len(subdirs) > 0:
-            branches = [
-                self.scan_directory(os.path.join(subpath, subdir)) for subdir in subdirs
-            ]
+            branches = [self.scan_directory(os.path.join(subpath, subdir)) for subdir in subdirs]
             # Exclude branches without files as leaves. Since traversal is applied pre-order,
             # branch.branches has already been processed and we don't need to check deeper nesting.
-            branches = [
-                branch for branch in branches if branch.items or branch.branches
-            ]
+            branches = [branch for branch in branches if branch.items or branch.branches]
 
         return ItemTree(subpath, items, branches)
 
     def create_annotation(self, item: FileItem, name: str) -> FileItem:
-        annotation = self.make_fileitem_from_path(
-            name, self.get_annotations_subpath(item), is_annotation=True
-        )
+        annotation = self.make_fileitem_from_path(name, self.get_annotations_subpath(item), is_annotation=True)
         item.annotations = (item.annotations or []).append(annotation)
         return annotation
 
@@ -138,9 +120,7 @@ class FileItemSource(ItemSource):
         descriptor = indescriptor.strip("/")
         if descriptor.endswith(self.annotation_file_suffix):
             annotation_item = self.shallowitem_from_descriptor(descriptor, True)
-            h5ad_descriptor = self.convert_annotation_path_to_h5ad(
-                annotation_item.subpath
-            )
+            h5ad_descriptor = self.convert_annotation_path_to_h5ad(annotation_item.subpath)
             item = self.lookup_item(h5ad_descriptor)
             if item is not None:
                 dir_util.ensure_dir_exists(self.full_path(annotation_item.subpath))
@@ -160,9 +140,7 @@ class FileItemSource(ItemSource):
             True,
         )
 
-    def make_fileitem_from_path(
-        self, filename, subpath, is_annotation=False, is_shallow=False
-    ) -> FileItem:
+    def make_fileitem_from_path(self, filename, subpath, is_annotation=False, is_shallow=False) -> FileItem:
         if is_annotation and filename.endswith(self.annotation_file_suffix):
             name = filename[: -len(self.annotation_file_suffix)]
             ext = self.annotation_file_suffix
@@ -204,8 +182,7 @@ class FileItemSource(ItemSource):
                 )
                 for annotation in sorted_files
                 if self.is_gene_set(annotation)
-                and annotation[: -len(self.gene_set_file_suffix)]
-                not in [a.name for a in annotation_files]
+                and annotation[: -len(self.gene_set_file_suffix)] not in [a.name for a in annotation_files]
                 and os.path.isfile(os.path.join(annotations_fullpath, annotation))
             ]
 

@@ -19,16 +19,11 @@ from cellxgene_gateway.env import enable_annotations
 def render_annotations(item, item_source):
     if not enable_annotations:
         return ""
-    url = flask_util.view_url(
-        item_source.get_annotations_subpath(item), item_source.name
-    )
+    url = flask_util.view_url(item_source.get_annotations_subpath(item), item_source.name)
     new_annotation = [f"<a class='new' href='{url}'>new</a>"]
 
     annotations = (
-        [
-            f"<a href='{CacheKey(item, item_source, a).view_url}/'>{html.escape(a.name)}</a>"
-            for a in item.annotations
-        ]
+        [f"<a href='{CacheKey(item, item_source, a).view_url}/'>{html.escape(a.name)}</a>" for a in item.annotations]
         if item.annotations
         else []
     )
@@ -41,16 +36,8 @@ def render_item(item, item_source):
 
 
 def render_item_tree(item_tree, item_source):
-    items = (
-        "\n".join([render_item(i, item_source) for i in item_tree.items])
-        if item_tree.items
-        else ""
-    )
-    branches = (
-        "\n".join([render_item_tree(b, item_source) for b in item_tree.branches])
-        if item_tree.branches
-        else ""
-    )
+    items = "\n".join([render_item(i, item_source) for i in item_tree.items]) if item_tree.items else ""
+    branches = "\n".join([render_item_tree(b, item_source) for b in item_tree.branches]) if item_tree.branches else ""
     html = "<ul>" + items + branches + "</ul>"
     if item_tree.descriptor:
         descriptor = item_tree.descriptor.lstrip("/")

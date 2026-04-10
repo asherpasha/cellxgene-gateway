@@ -58,11 +58,7 @@ class BackendCache:
 
     def check_entry(self, key):
         contents = self.entry_list
-        matches = [
-            c
-            for c in contents
-            if c.key.equals(key) and c.status != CacheEntryStatus.terminated
-        ]
+        matches = [c for c in contents if c.key.equals(key) and c.status != CacheEntryStatus.terminated]
 
         if len(matches) == 0:
             return None

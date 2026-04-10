@@ -188,9 +188,7 @@ class CacheEntry:
                 raise CellxgeneException(f"Unexpected method {request.method}", 400)
             content_type = cellxgene_response.headers["content-type"]
             if "text" in content_type:
-                gateway_content = self.rewrite_text_content(
-                    cellxgene_response.content.decode()
-                )
+                gateway_content = self.rewrite_text_content(cellxgene_response.content.decode())
             else:
                 gateway_content = cellxgene_response.content
 
