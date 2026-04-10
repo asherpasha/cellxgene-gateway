@@ -205,6 +205,15 @@ def favicon():
     )
 
 
+@app.route("/view/static/assets/icon-25c81dcb04bb17fa0e8ad26da31ac22b.png")
+def cellxgenelogo():
+    return send_from_directory(
+        os.path.join(app.root_path, "static/images"),
+        "icon-25c81dcb04bb17fa0e8ad26da31ac22b.png",
+        mimetype="image/png",
+    )
+
+
 @app.route("/")
 def index():
     source_name = request.args.get("source")

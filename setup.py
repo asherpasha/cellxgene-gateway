@@ -56,10 +56,7 @@ setup(
             "static/css/*.css",
             "static/js/annotation.js",
             "static/images/*.svg",
-            "static/assets/*",
-            "static/*.js",
-            "static/*.css",
-            "static/*.*.map",
+            "static/images/*.png",
             "templates/*.html",
         ]
     },
