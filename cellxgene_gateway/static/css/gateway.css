@@ -31,7 +31,7 @@ body {
 
 /* Main content */
 .cxg-main {
-    max-width: 720px;
+    max-width: 90%;
     margin: 2rem auto;
     padding: 0 1.5rem;
 }
