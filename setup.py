@@ -56,7 +56,6 @@ setup(
             "static/css/*.css",
             "static/js/annotation.js",
             "static/images/*.svg",
-            "static/nibr.ico",
             "templates/*.html",
         ]
     },

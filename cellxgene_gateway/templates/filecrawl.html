@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cellxgene Gateway - File Crawler</title>
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='nibr.ico') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/bar-logo.svg') }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/gateway.css') }}">
@@ -25,18 +25,10 @@
     </div>
 </nav>
 
-<main class="cxg-main">
-    <p class="cxg-subtitle">Select a dataset to open it in Cellxgene Server.</p>
 
-    <div class="cxg-filelist">
-        {{ rendered_html|safe }}
-    </div>
+<main class="cxg-main">
+    <p class="cxg-subtitle">This page is disabled. Please return to: <a href="{{ url_for('index') }}">Homepage</a></p>
 </main>
 
-<script>
-    $(() => {
-        $("a.new").click(new_annotation_callback);
-    });
-</script>
 </body>
 </html>

@@ -203,9 +203,9 @@ def handle_invalid_process(error):
 @app.route("/favicon.ico")
 def favicon():
     return send_from_directory(
-        os.path.join(app.root_path, "static"),
-        "nibr.ico",
-        mimetype="image/vnd.microsof.icon",
+        os.path.join(app.root_path, "static/images"),
+        "bar-logo.svg",
+        mimetype="image/svg+xml",
     )
 
 
@@ -239,37 +239,10 @@ def index():
 
 
 @app.route("/filecrawl.html")
-@app.route("/filecrawl/<path:path>")
 def filecrawl(path=None):
-    source_name = request.args.get("source")
-    sources = (
-        filter(
-            lambda x: x.name == urllib.parse.unquote_plus(source_name),
-            item_sources,
-        )
-        if source_name
-        else item_sources
-    )
-    # loop all data sources --
-    rendered_sources = [
-        render_item_source(item_source, path) for item_source in sources
-    ]  # will we need to make this async in the page???
-    rendered_html = "\n".join(rendered_sources)
-
-    resp = make_response(
-        render_template(
-            "filecrawl.html",
-            extra_scripts=get_extra_scripts(),
-            rendered_html=rendered_html,
-            path=path,
-        )
-    )
-    set_no_cache(resp)
-    return resp
-
+    return render_template("filecrawl.html")
 
 entry_lock = Lock()
-
 
 def matching_source(source_name):
     if source_name is None and default_item_source is not None:
@@ -328,32 +301,7 @@ def do_view(path, source_name=None):
 
 @app.route("/cache_status", methods=["GET"])
 def do_GET_status():
-    return render_template(
-        "cache_status.html",
-        entry_list=cache.entry_list,
-        extra_scripts=get_extra_scripts(),
-    )
-
-
-@app.route("/cache_status.json", methods=["GET"])
-def do_GET_status_json():
-    def map_entry(entry):
-        dataset = entry.key.h5ad_item.descriptor
-        annotation_file = entry.key.annotation_descriptor
-        return {
-            "dataset": dataset,
-            "annotation_file": annotation_file,
-            "launchtime": entry.launchtime,
-            "last_access": entry.timestamp,
-            "status": entry.status.name,
-        }
-
-    return json.dumps(
-        {
-            "launchtime": app.extensions.get("cellxgene_gateway", {}).get("launchtime"),
-            "entry_list": [map_entry(entry) for entry in cache.entry_list],
-        }
-    )
+    return render_template("cache_status.html")
 
 
 def get_cache_key(path):
