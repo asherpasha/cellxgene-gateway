@@ -1,0 +1,86 @@
+body {
+    background: #f7f8fa;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+}
+
+/* Navbar */
+.cxg-navbar {
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 0 1.5rem;
+    height: 54px;
+    display: flex;
+    align-items: center;
+}
+.cxg-navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.cxg-logo-img {
+    height: 36px;
+    width: auto;
+    display: block;
+}
+.cxg-brand-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: #111827;
+}
+
+/* Main content */
+.cxg-main {
+    max-width: 720px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+.cxg-subtitle {
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 1.25rem;
+}
+
+/* File list */
+.cxg-filelist,
+.cxg-filelist ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.cxg-filelist li {
+    border-bottom: 1px solid #f3f4f6;
+}
+.cxg-filelist li:last-child {
+    border-bottom: none;
+}
+.cxg-filelist a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 16px;
+    color: #374151;
+    text-decoration: none;
+    font-size: 13.5px;
+    transition: background 0.1s, color 0.1s;
+}
+.cxg-filelist a:hover {
+    background: #f9fafb;
+    color: #1d4ed8;
+}
+.cxg-filelist a::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #bfdbfe;
+    flex-shrink: 0;
+}
+.cxg-filelist a[href$="/"]::before,
+.cxg-filelist a.folder::before {
+    background: #fde68a;
+}
