@@ -55,7 +55,7 @@ setup(
         "cellxgene_gateway": [
             "static/css/*.css",
             "static/js/annotation.js",
-            "static/images/*.svg"
+            "static/images/*.svg",
             "static/nibr.ico",
             "templates/*.html",
         ]
